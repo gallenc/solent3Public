@@ -1,0 +1,218 @@
+= Configuring a DNS Server in Ubuntu – examples of file and troubleshooting techniques
+
+*Part 1 Configure a Static IP address for your DNS Server*
+
+*You IP address can be of the form 192.168.X.2 (where the X is your CNP LAN number on the front of your lab PC)*
+
+Step 1 Edit the file /etc/network/interfaces
+
+(using: _*sudo nano /etc/network/interfaces*_)
+
+Add or modify an entry for eth2 as follows:
+
+auto eth2
+
+iface eth2 inet static
+
+address 192.168.*X*.2
+
+netmask 255.255.255.0
+
+network 192.168.*X*.0
+
+dns-nameserver 192.168.*X*.2
+
+It is best to restart the server to update the IP address (_*sudo shutdown –r now*_)
+
+Step 2: Add your name server and domain name to /etc/resolv.conf
+
+a.  Edit the /etc/resolv.conf file
+b.  On the line beginning “domain” replace the domain names with your own, eg. abc.com
+c.  You should see your new IP address shown under “nameserver” – if not add it there
+
+_________________________________________________________________________________________________________________________________________
+Note: be aware that if any interface is using DHCP the resolv.conf file may be overwritten by the DHCP server when you reboot the server.
+_________________________________________________________________________________________________________________________________________
+
+*Part 2 Configuring a Forward Lookup Zone.*
+
+Step 1: if the file *“/etc/bind/named.conf*” does not exist you will need to create it, but if it does exist it is best to delete or rename the existing one and create a new one.
+
+You should add an entry for the new zone to the end of the file. The following is a simple example entry in named.conf for the “abc.com” domain:
+
+*zone "abc.com" in \{*
+
+*allow-transfer \{ any; };*
+
+*file "/etc/bind/abc.com";*
+
+*type master;*
+
+*};*
+
+Step 2: in the */etc/bind* directory create the zone file, eg. “abc.com” in this example. In the file add records for the Start of Authority (SOA), Name Server (NS) and a host record for the DNS server (A record). The following is an example:
+
+*(Note: The larger gaps are tabs not spaces)*
+
+*$TTL 2D*
+
+*@ IN SOA linux2.abc.com. root.linux2.abc.com. (*
+
+*2013112900 ; serial*
+
+*3H ; refresh*
+
+*1H ; retry*
+
+*1W ; expiry*
+
+*1D ) ; minimum*
+
+*abc.com. IN NS linux2.abc.com.*
+
+*linux2 IN A 192.168.X.2*
+
+*www IN CNAME linux2*
+
+The first line of the file specifies the time to live (TTL) for the name server record. The start of authority identifies the start of the zone entries. The email address of the administrator is root at localhost. The serial number and timing information in the SOA record is used for synchronizing zone transfers to other name servers. The next record identifies the Name Server (NS) as a host called Linux2. The next record is a host record for host Linux2 – add other host records or aliases as required.
+
+Step 3: Start or restart the *bind9* daemon by entering the following at the shell prompt:
+
+*service bind9 restart*
+
+Note: i) Use the restart option if you need to restart the DNS service after modifications.
+
+{empty}ii) Check to see if the bind9 daemon is running by entering the following at a shell prompt:
+
+*ps ax | grep bind*
+
+Step 4 You should configure TCP/IP with the correct DNS information in order to test the DNS server. From the TCP/IP configuration for the server or another workstation attached to it add the address of the DNS server and the domain suffix information, eg. 192.168.*X*.2 and “namerica.net”. To do this see “DNS Client Configuration”.
+
+Step 5: Test the DNS server and the DNS client configuration by using the *host* or *nslookup* command at a shell prompt, eg.
+
+*nslookup linux2.abc.com*
+
+*Troubleshooting note:*
+
+Check the */etc/host.conf* file to ensure that the order is set to “*order bind, hosts*” – modify it if necessary.
+
+This will ensure that the DNS server is used first – otherwise of a conflicting record is found in the /etc/hosts file it will use the first entry found in there.
+
+Note: if not using DNS: the binding order should be set to: “*order hosts, bind*”
+
+=
+
+=
+
+=
+
+=
+
+=  +
+Part 2 Configuring a Reverse Lookup Zone.
+
+Step 1: add an entry to the */etc/bind/named.conf* for the reverse lookup zone for the new domain
+
+The following is a simple example entry in *named.conf* for the 192.168.*X*.0 network:
+
+*zone "X.168.192.in-addr.arpa" in \{*
+
+*allow-transfer \{ any; };*
+
+*file "/etc/bind/X.168.192.in-addr.arpa";*
+
+*type master;*
+
+*};*
+
+*(Note: replace X with your CNP LAN number)*
+
+Step 2: in the */etc/bind* directory create the zone file, eg. “*X*.168.192.in-addr.arpa” in this example. In the file add records for the Start of Authority (SOA), Name Server (NS) and a reverse lookup record for the DNS server (PTR record). The following is an example:
+
+*$TTL 2D*
+
+*@ IN SOA linux2.abc.com. root.linux2.abc.com. (*
+
+*2 ; serial*
+
+*3H ; refresh*
+
+*1H ; retry*
+
+*1W ; expiry*
+
+*1D ) ; minimum*
+
+*X.168.192.in-addr.arpa. IN NS linux2.abc.com.*
+
+*2 IN PTR linux2.abc.com.*
+
+The format is similar to the forward lookup zone file, however the host records are replaced with reverse lookup pointers or PTR records. Note that the name server and PTR records must be identified by the fully qualified domain name (FQDN) and there is a full stop at the end.
+
+Step 3: Start or restart the *bind9* daemon by entering the following at the shell prompt:
+
+*service bind9 restart*
+
+Note: Use the restart option if you need to restart the DNS service after modifications.
+
+Step 4: Test the DNS server by using the *host* or *nslookup* command at a shell prompt, eg.
+
+*nslookup linux2.abc.com*
+
+and the reverse lookup similarly, eg:
+
+*nslookup 192.168.X.2*
+
+==  +
+DNS Client Configuration
+
+Your client will also need to have a static IP address and you will need to tell it the IP address of your new DNS server too.
+
+*Part 1 Configure a Static IP address for your Client*
+
+*You IP address can be of the form 192.168.X.3 (where the X is your CNP LAN number on the front of your lab PC) – in this case put it on the same network as the DNS server.*
+
+Step 1 Edit the file /etc/network/interfaces
+
+(using: _*sudo nano /etc/network/interfaces*_)
+
+Add or modify an entry for eth2 as follows:
+
+auto eth2
+
+iface eth2 inet static
+
+address 192.168.*X*.3
+
+netmask 255.255.255.0
+
+network 192.168.*X*.0
+
+dns-nameserver 192.168.*X*.2
+
+Note: your IP is 192.168.X.3 and the DNS server is the IP address of your new DNS server
+
+It is best to restart the server to update the IP address (_*sudo shutdown –r now*_)
+
+Step 2: Add your name server and domain name to /etc/resolv.conf
+
+a.  Edit the /etc/resolv.conf file
+b.  On the line beginning “domain” replace the domain names with your own, eg. abc.com
+c.  You should see the IP address of the DNS server shown under “nameserver” – if not add it there
+
+_________________________________________________________________________________________________________________________________________
+Note: be aware that if any interface is using DHCP the resolv.conf file may be overwritten by the DHCP server when you reboot the server.
+_________________________________________________________________________________________________________________________________________
+
+Step 3: Test your Client Access to the DNS server
+
+a.  Test the forward zone by using nslookup as before (eg. nslookup linux2)
+b.  Test the reverse zone by using nslookup (eg. nslookup 192.168.X.2)
+
+Additional step: Add a forward zone entry for your client on the DNS server
+
+Add a new host record in your abc.com zone file for your client, eg. work1.abc.com, IP address 192.168.X.3
+
+Additional step 2: Add a reverse zone entry for your client on the DNS Server.
+
+Add a new reverse PTR record for your client in the reverse zone file of your DNS server, eg. 192.168.X.3 with a value of work3.abc.com

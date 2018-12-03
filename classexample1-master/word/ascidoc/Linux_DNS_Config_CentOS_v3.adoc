@@ -1,0 +1,257 @@
+= Configuring and troubleshooting a DNS Server in CentOS
+
+*Part 1 Configure a Static IP address for your DNS Server*
+
+*You IP address can be of the form 192.168.X.2 (where the X is the CNP LAN number on the front of your lab PC)*
+
+Note: To avoid having to type _sudo_ before every shell command you may wish to go into super user mode by entering the _*su*_ command.
+
+*Step 1* Edit the interface file for your network interface.
+
+Run ifconfig to see the name of your network interface – for example it may be “ens33”
+
+Then edit the corresponding interface file in the /etc/sysconfig/network-scripts directory (eg.it may be called ifcfg-ens33): (eg: _*sudo nano /etc/sysconfig/network-scripts/ifcfg-ens33*_)
+
+Add or modify an entry for ens33 (or whichever network interface you are using) as follows:
+
+DEVICE=ens33
+
+ONBOOT=yes
+
+BOOTPROTO=static
+
+IPADDR=192.168.*X*.2
+
+NETMASK=255.255.255.0
+
+NETWORK=192.168.*X*.0
+
+Where X is your CNP LAN PC number
+
+It is best to restart the network service to update the IP address (_*sudo service network restart*_)
+
+*Step2*: Disable unused interfaces
+
+The other interfaces may be picking up their address and DNS information from a DHCP server, which may cause unexpected results – so we need to shutdown the unused interfaces temporarily.
+
+a.  Run ifconfig and look for the other ens interfaces, eg. ens37
+b.  Enter: _*ifconfig ens37 down*_ (This will temporarily disable this interface)
+
+You may need to do this for other ens interfaces if they exist, but don’t do this to the interface that you used in step 1 (eg. ens33).
+
+Note: If you need to restart the network with _system network restart_ you will notice and error message, but don’t worry this only appears because you have disabled the other interface and ens33 will still appear with _ifconfig_. You shouldn’t need to restart the network however.
+
+*Step 3:* Add your name server and domain name to /etc/resolv.conf
+
+To configure the DNS client (resolver) information for your host create or edit the */etc/resolv.conf* file. For *example*:
+
+*nameserver 192.168.X.2*
+
+*domain abc.com*
+
+*search abc.com*
+
+(Note: It may be best to remove conflicting nameserver entries.)
+
+*Step 4* Check the */etc/host.conf* file to ensure that the order is set to “*order bind, hosts*” – modify it if necessary. (This will ensure that the DNS server is queried before the local /etc/hosts file.)
+
+Note: if not using DNS: the order should be set to: “*order hosts, bind*”
+
+*Part 2 Configuring a Forward Lookup Zone.*
+
+*Step 1*: If the file *“/etc/named.conf*” does not exist you will need to create it.
+
+You should add an entry for the new zone to the end of the file. The following is a simple example entry in named.conf for the “abc.com” domain:
+
+*zone "abc.com" in \{*
+
+*allow-transfer \{ any; };*
+
+*file "/var/named/abc.com.db";*
+
+*type master;*
+
+*};*
+
+*Step 2:* In the */var/named* directory create the zone file, eg. “abc.com.db” in this example. In the file add records for the Start of Authority (SOA), Name Server (NS) and a host record for the DNS server (A record). The following is an example:
+
+*(Note: The larger gaps are tabs not spaces)*
+
+*$TTL 2D*
+
+*@ IN SOA linux2.abc.com. root.linux2.abc.com. (*
+
+*2 ; serial*
+
+*3H ; refresh*
+
+*1H ; retry*
+
+*1W ; expiry*
+
+*1D ) ; minimum*
+
+*abc.com. IN NS linux2.abc.com.*
+
+*linux2 IN A 192.168.X.2*
+
+*www IN CNAME linux2*
+
+The first line of the file specifies the time to live (TTL) for the name server record. The start of authority identifies the start of the zone entries. The email address of the administrator is root at localhost. The serial number and timing information in the SOA record is used for synchronizing zone transfers to other name servers. The next record identifies the Name Server (NS) as a host called linux2. The next record is a host record for host linux2 – add other host records or aliases as required.
+
+Step 3: Start or restart the *named* daemon by entering the following at the shell prompt:
+
+*sudo systemctl start named* or: *service named restart*
+
+Note: i) Use the restart option if you need to restart the DNS service after modifications.
+
+{empty}ii) Check to see if the bind9 daemon is running by entering the following at a shell prompt:
+
+*ps ax | grep named*
+
+Step 4 You should configure TCP/IP with the correct DNS information in order to test the DNS server. From the TCP/IP configuration for the server or another workstation attached to it add the address of the DNS server and the domain suffix information, eg. 192.168.*X*.2 and “namerica.net”. To do this see “DNS Client Configuration”.
+
+Step 5: Test the DNS server and the DNS client configuration by using the *host* or *nslookup* command at a shell prompt, eg.
+
+*nslookup linux2.abc.com*
+
+Step 6: You can also test the DNS server with:
+
+== named-checkzone abc.com abc.com.db
+
+Note: the first abc.com is the zone and the second refers to the zone file. This command can be used for further troubleshooting.
+
+*Troubleshooting note:*
+
+Check the */etc/host.conf* file to ensure that the order is set to “*order bind, hosts*” – modify it if necessary.
+
+This will ensure that the DNS server is used first – otherwise of a conflicting record is found in the /etc/hosts file it will use the first entry found in there.
+
+*Part 2 Configuring a Reverse Lookup Zone*.
+
+Step 1: Add an entry to the */etc/named.conf* for the reverse lookup zone for the new domain.
+
+The following is a simple example entry in *named.conf* for the 192.168.*X*.0 network:
+
+*zone "X.168.192.in-addr.arpa" in \{*
+
+*allow-transfer \{ any; };*
+
+*file "/var/named/X.168.192.in-addr.arpa.db";*
+
+*type master;*
+
+*};*
+
+*(Note: replace X with your CNP LAN number)*
+
+Step 2: in the */var/named* directory create the zone file, eg. “*X*.168.192.in-addr.arpa.db” in this example. In the file add records for the Start of Authority (SOA), Name Server (NS) and a reverse lookup record for the DNS server (PTR record). The following is an example:
+
+*$TTL 2D*
+
+*@ IN SOA linux2.abc.com. root.linux2.abc.com. (*
+
+*2 ; serial*
+
+*3H ; refresh*
+
+*1H ; retry*
+
+*1W ; expiry*
+
+*1D ) ; minimum*
+
+*X.168.192.in-addr.arpa. IN NS linux2.abc.com.*
+
+*2 IN PTR linux2.abc.com.*
+
+The format is similar to the forward lookup zone file, however the host records are replaced with reverse lookup pointers or PTR records. Note that the name server and PTR records must be identified by the fully qualified domain name (FQDN) and there is a full stop at the end.
+
+Step 3: Start or restart the *named* daemon by entering the following at the shell prompt:
+
+*sudo systemctl start named* or: *system named restart*
+
+Note: Use the restart option if you need to restart the DNS service after modifications.
+
+Step 4: Test the DNS server by using the *host* or *nslookup* command at a shell prompt, eg.
+
+*nslookup linux2.abc.com*
+
+And the reverse lookup similarly, eg:
+
+*nslookup 192.168.X.2*
+
+Step 5: You can also test the DNS server with:
+
+== named-checkzone X.168.192.in-addr.arpa X.168.192.in-addr.arpa.db
+
+* +
+DNS Client Configuration*
+
+Your client will also need to have a static IP address and you will need to tell it the IP address of your new DNS server too.
+
+*Part 3 Configure a Static IP address for your Client*
+
+*You IP address can be of the form 192.168.X.3 (where the X is your CNP LAN number on the front of your lab PC) – in this case put it on the same network as the DNS server.*
+
+Step 1 Edit the interface file for your network interface.
+
+Run ifconfig to see the name of your network interface – for example it may be “ens33”
+
+Then edit the corresponding interface file in the /etc/sysconfig/network-scripts directory (eg.it may be called ifcfg-ens33): (eg: _*sudo nano /etc/sysconfig/network-scripts/ifcfg-ens33*_)
+
+Add or modify an entry for eth2 (or whichever network interface you are using) as follows:
+
+DEVICE=ens33
+
+ONBOOT=yes
+
+BOOTPROTO=static
+
+IPADDR=192.168.*X*.3
+
+NETMASK=255.255.255.0
+
+NETWORK=192.168.*X*.0
+
+Where *X* is your CNP LAN PC number.
+
+It is best to restart the network service to update the IP address (_*sudo service network restart*_).
+
+Step2: Disable unused interfaces.
+
+The other interfaces may be picking up their address and DNS information from a DHCP server, which may cause unexpected results – so we need to shutdown the unused interfaces temporarily.
+
+a.  Run ifconfig and look for the other ens interfaces, eg. ens37.
+b.  Enter: _*ifconfig ens37 down*_ (This will temporarily disable this interface).
+
+You may need to do this for other ens interfaces if they exist, but don’t do this to the interface that you used in step 1 (eg. ens33).
+
+Step 3: Add your name server and domain name to */etc/resolv.conf*
+
+To configure the DNS client (resolver) information for your host create or edit the */etc/resolv.conf* file. For example:
+
+*nameserver 192.168.X.2*
+
+*domain abc.com*
+
+*search abc.com*
+
+The nameserver should be the IP address of your DNS server and not this client
+
+(note: it may be best to remove conflicting nameserver entries)
+
+Step 4 Check the */etc/host.conf* file to ensure that the order is set to “*order bind, hosts*” – modify it if necessary. (This will ensure that the DNS server is queried before the local /etc/hosts file.)
+
+Step 5: Test your Client Access to the DNS server.
+
+a.  Test the forward zone by using nslookup as before (eg - *nslookup linux2*)
+b.  Test the reverse zone by using nslookup (eg - *nslookup 192.168.X.2*)
+
+Additional step: Add a forward zone entry for your client on the DNS server.
+
+Add a new host record in your abc.com zone file for your client, eg. *work1.abc.com*, IP address 192.168.*X*.3
+
+Additional step 2: Add a reverse zone entry for your client on the DNS Server.
+
+Add a new reverse PTR record for your client in the reverse zone file of your DNS server, eg. 192.168.*X*.3 with a value of *work3.abc.com*

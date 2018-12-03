@@ -1,0 +1,12 @@
+== Download
+
+You can download a precompiled version from the https://github.com/asciidoctor/gitbucket-asciidoctor-plugin/releases[Release page].
+
+
+
+== Build from source
+
+.With sbt
+----
+sbt assembly
+----

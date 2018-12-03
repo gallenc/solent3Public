@@ -1,0 +1,71 @@
+*Lab Configuring DHCP on Acme's Linux Server*
+
+*General*
+
+{empty}1) You will need a Linux server. You should run a Linux virtual machine from your local computer. You will also need a second virtual machine on the same PC to act as a DHCP client – this can be running Windows or Linux.
+
+Do not use the YaST GUI to do this lab – you must edit the relevant configuration files directly! Please read the documentation on SOL or from Internet documentation.
+
+*Part 1 – DHCP Server *
+
+1.  Configure a static IP address for the Linux server, for example 192.168.XX.2 (using the ens33 interface)
+2.  On the Linux server you should create a file called “*dhcpd.conf*” in the */etc* or the */etc/dhcp* folder (depending on which distro of Linux you are using), containing configuration information for the DHCP protocol. This file may exist already with a sample configuration that does not match yours – rename it and then create a fresh blank dhcpd.conf file. Now you configure information relevant to your own DHCP scope of addresses. For example: subnet 192.168.XX.0, and the DHCP scope range of 192.168.XX.10 to 40. Also configure some options, eg. DNS server 192.168.XX.2 and domain name (for example “acme.com” – but choose your own). Also configure other options such as router (eg. 192.168.XX.1) and broadcast address, plus any other appropriate scope options. (You will need to research the contents of this file first, but see the separate handout for details – configure your scope based upon this information).
+3.  Create a blank leases file on the dhcp server.
+4.  Start and test the DHCP service with “*dhcpd –f*” or *“service dhcpd start*”at the command prompt. You should also set the service to start automatically (you can do this from the service configuration utility in the KDE Control Panel).
+
+*Note: see separate handout on mycourse for guidance on how to configure the dhcpd.conf file, getting dhcp to run and also correcting errors when you start the DHCP daemon*.
+
+Note: You may need to reboot the Linux server, but make sure that the dhcp daemon is still running after it has rebooted.
+
+1.  Configure the other client virtual machine for dynamic IP addressing. Use IPCONFIG, if using Windows 2008 or “ifconfig” if using Linux, to configure and confirm that a dynamic address has been picked up from the Linux DHCP server. Also confirm that the options are being correctly received by the workstation.
+2.  If using a Linux workstation then test the Linux server by using the “dhclient” command at the shell prompt as follows:
+
+{empty}i) *ip addr show* or *ifconfig* (to see the ip address)
+
+{empty}ii) *dhclient -r* (to release a dynamic ip)
+
+{empty}iii) *ip addr show* (to see if it has been released)
+
+{empty}iv) *dhclient ens33* (to renew the ip address)
+
+note: you may get an error, but it does work.
+
+{empty}v) *ip addr show* (to see if it has an address from your server)
+
+To successfully complete and demonstrate the above criteria:
+
+____________________________________________________________________________________________________________________________________
+Demonstrate correct configuration of DHCP on the Linux server and the ability to retrieve a dynamic address from it on a workstation
+____________________________________________________________________________________________________________________________________
+
+*Part 2 – Reserving an IP address for a Client*
+
+{empty}1) Find out the MAC address of the client virtual machine (IPCONFIG /ALL on Windows, or ifconfig on Linux)
+
+{empty}2) Then create a reserved IP address entry for the workstation within your scope of IP addresses in the dhcpd.conf file, but a different one to that allocated previously by the DHCP server (see separate handout).
+
+{empty}3) Renew the lease of your workstation to make sure that it has picked up the new address.
+
+To successfully complete and demonstrate the above criteria:
+
+______________________________________________________________________________________________________________________________
+Demonstrate correct configuration of a reserved IP address on the DHCP server and that the client workstation is receiving it.
+______________________________________________________________________________________________________________________________
+
+*IMPORTANT NOTE: when you have finished please demonstrate the DHCP server to your tutor and finally stop the dhcp daemon and delete the /etc/dhcp.conf file*
+
+*Competencies to demonstrate:*
+
+1.  Configuration of a Linux DHCP server using the dhcpd.conf file to supply an IP address range to clients
+2.  Configuring configuration information and“options” to clients
+3.  Testing the server using a client
+4.  Configure a Linux DHCP server with a reserved IP address
+5.  Testing that a client can receive a reserved IP
+6.  Decommissioning of a Linux DHCP server
+7.  Reconfigure laboratory cabling back to the way it should be after decommissioning
+
+*Q1. What other methods are there to configure DHCP on a Suse Linux server?*
+
+*Q2. How can you configure a static mapping for a workstation on a Linux DHCP server?*
+
+*Q3. How would you configure DHCP to automatically update DNS with any change of IP address?*

@@ -1,0 +1,240 @@
+*Ansible - Cisco switch test (printing the clock value to host Terminal)*
+
+*Pre-requisites:*
+
+* Centos7.
+* Update epel release (# sudo yum install/update epel-release).
+* Install Ansible v2.1 or above (“#yum install ansible”, installs version 2.4.2).
+* SSH connection to a cisco switch.
+
+*Reference material*:
+
+Below is a link to a premade configuration for a playbook that retrieves the switches time and prints it to the host’s Terminal. A ‘git clone’ link is available to retrieve the preconfigured documents. This guide assumes you have not used that and are replicating them manually in order to grasp how playbooks work and the how the file system is structured.
+
+*Note - A directory tree is available at the bottom of this document.*
+
+Ansible Cisco switch clock - https://github.com/brona/ansible-cisco-ios-example[https://github.com/brona/ansible-cisco-ios-example]
+
+*Step one - Configure the inventory file*:
+
+1.  By default, Ansible looks in the host information in the /etc/ansible/hosts inventory file. If the file does not exist create it.
+2.  Add the information contained in the “inventory” link from the GitHub repository.
+1.  [Cisco] #Desired group name.
+2.  Host1 192.168.121.3 #Hostname followed by ip address.
+3.  Host2 192.168.121.4 #Any additional hosts.
+
+*NOTE - In order to make the ‘# ansible -m ping all’ command work you also have to add the following to the hosts file:*
+
+1.  [all:vars] #Works on all variables
+2.  ansible_python_interpreter=/usr/bin/python #The location of your python may vary
+3.  ansible _connection=local #A default value and not necessary but good practice to include.
+
+*Step two - Configure the ansible.cfg file*:
+
+1.  When adding the information from the ansible.cfg file from the GitHub repository it is unnecessary to change the path of the hosts inventory file unless your creating one that is not in the default /etc/ansible/hosts directory. It is still useful to increase the timeout which is set to ten seconds by default. This can be done by adding the following:
+1.  [defaults] #The commented out values in this field are the default values.
+2.  Timeout = 30 #Change the timeout value based on the activities you intend to perform.
+
+*Step three - Create a playbook*:
+
+Playbooks are scripts written in a YAML/.yml file. When a script is played it looks for it in the current directory. This makes it useful to store all of the playbooks in a separate folder.
+
+1.  Create a directory called playbooks in the ansible folder.
+1.  # sudo mkdir /etc/ansible/playbooks
+2.  Create a ‘.yml’ file in the playbooks directory
+1.  # sudo nano /etc/ansible/playbooks/cisco_test1.yml #adapt file name as needed.
+3.  Add the contents of the show_clock.yml file on GitHub to the YAML file you just created making sure to change any relevant fields to match your naming policies. (the below example is adapted for this document).
+1.  
+
+[cols=",",]
+|======================================================================================================================================
+|--- a|
+______________________________________________
+# YAML files always start with a triple hyphen
+______________________________________________
+
+| a|
+_______________________________________________________________________
+- hosts: cisco # The host group declared in the hosts file (can be all)
+_______________________________________________________________________
+
+| a|
+____________________________________________________________________________________________
+gather_facts: no # You don’t need fact data about the host as all you need is stored locally
+____________________________________________________________________________________________
+
+| a|
+_________________
+connection: local
+_________________
+
+| |
+| a|
+____________
+vars_prompt:
+____________
+
+| a|
+_______________________
+- name: "mgmt_username"
+_______________________
+
+| a|
+___________________________________________________________________________________________
+prompt: "Username:" # Defines the variable ‘mgmt_username’ as what you enter when prompted.
+___________________________________________________________________________________________
+
+| a|
+___________
+private: no
+___________
+
+| a|
+_______________________
+- name: "mgmt_password"
+_______________________
+
+| a|
+___________________________________________________________________________________________
+prompt: "Password:" # Defines the variable ‘mgmt_password’ as what you enter when prompted.
+___________________________________________________________________________________________
+
+| |
+| a|
+______
+tasks:
+______
+
+| |
+| a|
+_____________________________
+- name: SYS | Define provider
+_____________________________
+
+| a|
+_________
+set_fact:
+_________
+
+| a|
+________________________________________________________________________________________________
+Provider: # The below defines the variable called “provider” using the variables declared above.
+________________________________________________________________________________________________
+
+| a|
+__________________________________
+host: "\{\{ inventory_hostname }}"
+__________________________________
+
+| a|
+_________________________________
+username: "\{\{ mgmt_username }}"
+_________________________________
+
+| a|
+_________________________________
+password: "\{\{ mgmt_password }}"
+_________________________________
+
+| |
+| a|
+________________________
+- name: IOS | Show clock
+________________________
+
+| a|
+____________
+ios_command:
+____________
+
+| a|
+_______________________________________________________________________________________________________________________________________
+provider: "\{\{ provider }}" # Uses the login data defined as “prompt” to login to the switch before the show clock command can be run.
+_______________________________________________________________________________________________________________________________________
+
+| a|
+_________
+commands:
+_________
+
+| a|
+_______________________________________
+- show clock # Shows the switches clock
+_______________________________________
+
+| a|
+___________________________________________________________________________________________
+register: clock # Registers the output of the “show clock” command as a value called clock.
+___________________________________________________________________________________________
+
+| |
+| a|
+__________________________________________________________________________________________________________
+- debug: msg="\{\{ clock.stdout }}" # Prints the clock values registered above the hosts terminal console.
+__________________________________________________________________________________________________________
+
+|======================================================================================================================================
+
+*Step four - Run the playbook*:
+
+*Input -*
+
+1.  # ansible-playbook cisco_test1.yml # Runs the playbook.
+2.  Username: # Prompt to enter a username.
+3.  Password: # Prompt to enter a password.
+
+*Output -*
+
+1.  PLAY [cisco] ********************************************************************
+2.  
+3.  TASK [SYS | Define provider] *******************************************************
+4.  Ok: [192.168.121.3]
+5.  
+6.  TASK [IOS | Show clock] ***********************************************************
+7.  Ok: [192.168.121.3]
+8.  
+9.  TASK [debug] *******************************************************************
+10. Ok: [192.168.121.3] => \{
+11. “msg”; [
+12. “*10:41:10:371 UTC Thu Jul 5 2018”
+13. ]
+14. }
+15. 
+16. PLAY RECAP ********************************************************************
+17. 192.168.121.3 : ok=3 changed=0 unreachable=0 false=0
+
+*Additional information*:
+
+*Directory tree -*
+
+The following is the layout of the /etc/ansible directory:
+
+.
+
+|
+
+---ansible.cfg
+
+|
+
+---backups
+
+|
+
+---group_vars
+
+| |
+
+| ---servers
+
+---hosts
+
+|
+
+---playbooks
+
+| |
+
+| ---cisco_test1.yml
+
+---roles

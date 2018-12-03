@@ -1,0 +1,43 @@
+*Micro placement handover*
+
+Feel free to contact me at mailto:joeyjunior_4@hotmail.com[joeyjunior_4@hotmail.com] if you have any questions.
+
+*Documentation*:
+
+This section pertains to the document on Neville’s cloud and is optimized for CentOS.
+
+1.  *ACME_scenario* -
+1.  Potentially change the structure of what ACME want in the numbered list.
+2.  *Ansible_switch_test_V1* -
+1.  This guide was mainly used to help instructors grasp the process and is not well tailored for students with little experience.
+3.  *Docker_introduction* -
+1.  Contains a basic overview of what Docker is and how it operates with simple examples.
+4.  *Gitbucket_guide* -
+1.  Comprises a simple Gitbucket user guide.
+2.  Consider giving student a username//password with the handout of this guide.
+5.  *Pre-existing labs* -
+1.  Add a link on where to gather the source information from (Dockerfile, Image...etc).
+2.  Potentially add information for how they run the source chosen ($docker run, $ansible-playbook...etc).
+6.  *Ansible_switch_config-user_guide* -
+1.  May need to implement an ip addressing scheme to avoid having to add extra network adaptors (or set them up before the labs) Any addressing scheme can be added to the SSH config section.
+2.  Make sure SSH is installed on the VM’s (can’t remember if i had to do this).
+3.  I have done a high level view on how to setup an SSH connection to a switch. This can be modified or supported with further documentation if you feel the students will require it. (otherwise let them work it out they are simple commands to research).
+
+*Missing software:*
+
+1.  *Ansible* -
+1.  VM’s need updating
+1.  Sudo yum epel-release.
+2.  Sudo yum install ansible.
+3.  Consider updating the OS version (this is based on most sources recommending the latest stable build but is proven slightly unnecessary by my lab work.
+2.  *Docker* -
+1.  A finalized image that can be used for the labs needs to be compiled.
+2.  The address for the Docker image needs to be included in the labs for students.
+3.  VM updates.
+1.  Install Docker.
+1.  Install required utilities - ($ sudo yum install -y yum-utils \ device-mapper-persistent-data \lvm2).
+2.  Setup repository - ($ sudo yum-config-manager \ --add-repo \ https://download.docker.com/linux/centos/docker-ce.repo[https://download.docker.com/linux/centos/docker-ce.repo]).
+3.  Install Docker ($ sudo yum install docker-ce).
+3.  *OS* -
+1.  A lot of the virtual machines are quite a bit out of date.
+4.  

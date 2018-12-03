@@ -1,0 +1,34 @@
+*Network Operating Systems (CEN502)*
+
+*The Acme Scenario*
+
+Acme are a medium sized company based in southern England. They sell bathrooms to the general public. They have five showroom style shops in Bournemouth, Southampton, Portsmouth, Swindon and Reading that also act as sales and support centers. The company employs 180 staff. Each shop employs about 30 staff, though not all need their own computers. The Southampton site also hosts the head office, employing 30 office staff.
+
+The company has the following departments: Sales, Marketing, Finance, Support, Management.
+
+They have decided to install new servers on their network, and have decided to go for an Open source approach. Therefore, the new servers will use the Linux OS.
+
+*Requirements*:
+
+Acme requires the following technologies to be configured and implemented:
+
+1.  They want to be able to configure static IP addresses for servers and dynamic IP addresses for workstations.
+2.  They want the IP addresses of the workstations on the network to be supplied dynamically by a server.
+3.  They want to employ a Linux server as a firewall to protect the network.
+4.  They want a server to provide name resolution for computers on the network.
+5.  The want to host a web site based on a Linux server.
+6.  They want to centralize user administration by implementing a server hosting a directory service.
+
+They want you to design and implement a solution to each requirement for them, and suggest other services that they may need to be hosted on the new Linux servers.
+
+The timescale for planning and implementing the new network is 4 months from now.
+
+*Implementation*:
+
+Acme have decided to use Docker to implement and test the above requirements. See Docker guide on learn.solent.ac.uk for details.
+
+Docker provides a new platform that can be used to install and configure applications from remote locations. They provide isolated environments to test and configure nearly any requirements needed including the above.
+
+You should take time to understand the basics of these implementation methods before labs are undertaken.
+
+Over to you!

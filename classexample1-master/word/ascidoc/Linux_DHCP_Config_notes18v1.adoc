@@ -1,0 +1,107 @@
+=
+
+=
+
+= Separate Handout – DHCP configuration examples
+
+These instructions apply for Suse or CentOS Linux (see slight variation in file paths for each)
+
+You will need a virtual machine as a DHCP server (either CentOS or Suse Linux). You will also need a second virtual machine that will be the DHCP client (either Windows or Linux)
+
+*Configuring the DHCP server IP address:*
+
+First of all you will need to configure a static IP address on the network interface for the DHCP server. Configure the ens33 interface with a static IP, eg. 192.168.X.2, where X is your CNP LAN PC number, eg. X=100 in this example below.
+
+(on the client VM use dynamic IP addressing).
+
+= Configuring a Linux DHCP Server
+
+Step 1: if the file “*dhcpd.conf*” does not exist in the */etc* directory (for Suse) or */etc/dhcp* (for CentOS) you will need to create it:
+
+Note: you are advised to rename the existing dhcpd.conf file and to create a new one from scratch.
+
+The following is a simple example dhcpd.conf for a server at 192.168.100.2 – *modify yours according to your own scenario!*
+
+*subnet 192.168.100.0* *netmask 255.255.255.0* *\{*
+
+____________________________________________
+*range 192.168.100.4 192.168.100.240; *
+
+*option subnet-mask 255.255.255.0; *
+
+*option broadcast-address 192.168.100.255; *
+
+*option routers 192.168.100.1; *
+
+*option domain-name-servers 192.168.100.2; *
+
+**option domain-name "****xyz.com"; **
+
+*}*
+____________________________________________
+
+The preceding specifies that any client in the 192.168.100.0/24 subnet will be given an IP address in the 192.168.100.200 - 240 range, broadcast address 192.168.100.255, default route 192.168.100.1, DNS (equivalent of resolv.conf) at 192.168.100.2, domain name uk.net. The netbios-node-type 8 refers to a client netbios node type H, which instructs the client to attempt netbios resolution first through unicast, and then on failure by broadcast. Note: that the preceding is a simple dhcpd. conf.
+
+Step 2: create an empty DHCP leases file enter the following shell command:
+
+t**ouch /var/lib/dhcp/db/dhcpd.leases** (for Suse Linux)
+
+*or:*
+
+*touch /var/lib/dhcp/dhcpd.leases* (for CentOS Linux**)**
+
+(note: touch is a command that creates an empty file)
+
+Step 3: start the DHCP daemon in the background (to restart each time Linux boots):
+
+*service dhcpd start* (or “restart” if it is already running)
+
+Step 4: check to see if the DHCP daemon is running: *ps ax | grep dhcpd *
+
+__________________________________________________________________________________________________________________
+(- ps lists the processes running, but the grep command will only display those associated with the dhcpd service)
+__________________________________________________________________________________________________________________
+
+Step 5: try running dhcp in the foreground to see whether it is configured correctly: *dhcpd –f*
+
+(if you get an error about interfaces then see note below under “common errors”)
+
+*Note: the error messages displayed by dhcpd –f command will tell you where the problems are – mostly caused by mis-typing errors. *
+
+*Also see “common errors” below.*
+
+*To configure a Linux client to use DHCP (note: not the DHCP server)*
+
+Step 1: Either use the network configuration utility from YaST (under “Network Devices” and then “Network Card”), or edit the file *etc/sysconfig/network/ifcfg-ethx* (where the x will be either 1 or 2) so that the entry for BOOTPROTO reads:
+
+*BOOTPROTO=dhcp* Note: remove the lines corresponding to ip address and subnet mask
+
+Step 2: restart the clients network interface from the system configuration utility in the control panel or by entering the following shell command: */etc/init.d/network restart* or simply: *service network restart*
+
+Now check your IP address using the command: *ifconfig*
+
+*Reserving a Dynamic IP address for a client*
+
+Here is an example of the reservation of an ip address for a client – you should use the MAC address of your workstation instead of 00:A0:78:8E:9E:AA. The following should be placed outside of your current IP address scope (eg. outside of the end of the closing “}”) :
+
+_________________________________________
+*host station1\{*
+
+*option host-name “station1.netlab.net”;*
+
+*hardware ethernet 00:A0:78:8E:9E:AA;*
+
+*fixed-address 192.168.100.8;*
+
+*}*
+_________________________________________
+
+*Common Errors*
+
+*Most errors are caused by mis-spelling or typing and remember that Linux is case sensitive.*
+
+*Note: possible errors and their cure:*
+
+{empty}a) If you start the DHCP daemon and get an error message about the */etc/sysconfig/dhcpd* file then edit this file and ensure that an entry exists for the dhcpd interface for your Ethernet card (either eth0 or eth1 – you can check which by running ifconfig from the shell prompt), eg. *DHCPD_INTERFACE=”ens33” *
+
+{empty}b) If you get a message that tells you that DHCP is not listening on any interfaces then this means that you have not set up the IP address on your server correctly. Make sure that you have a static IP address that is on the same network as the IP addresses for your DHCP scope (but obviously not within your DHCP scope). You can do this from YaST and then check it from the shell prompt with “*ifconfig*”. You may need to restart the networking service if the address isn’t displayed – eg. Enter: “*service network restart*”

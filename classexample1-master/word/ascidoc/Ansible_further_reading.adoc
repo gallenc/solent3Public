@@ -1,0 +1,16 @@
+[cols=",,",]
+|==================================================================================================================================================================================================================================
+|*Ansible source assessment table* | |
+|*Function* |*Link* a|
+*Usefulness*
+
+*1-10*
+
+|NEXUS switch config tutorial |https://github.com/jedelman8/nxos-ansible[https://github.com/jedelman8/nxos-ansible] |8
+|Official ansible documentation. |https://docs.ansible.com/ |10
+|Basic router config tutorial |https://www.networkcomputing.com/networking/ansible-network-automation-tutorial/1361419969 |8
+|Backup Cisco router - Ubuntu |http://www.rogerperkin.co.uk/network-automation/ansible-tutorial-network-engineers/ |8
+|Basic installation + setup tutorial |http://www.arpaware.com/blog/arpaware-technology-blog-1/post/ansible-setup-and-preparation-5[http://www.arpaware.com/blog/arpaware-technology-blog-1/post/ansible-setup-and-preparation-5] |8
+|Well laid out guide to basic ansible functions |https://scotch.io/tutorials/getting-started-with-ansible[https://scotch.io/tutorials/getting-started-with-ansible] |9
+|Compilation of great sources (Books, roles, playbooks, tools resources) |https://github.com/jdauphant/awesome-ansible[https://github.com/jdauphant/awesome-ansible] |10
+|==================================================================================================================================================================================================================================

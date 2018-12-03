@@ -1,0 +1,35 @@
+*Network Operating Systems (CEN502)*
+
+*Gitbucket user guide*
+
+*Background*:
+
+Gitbucket is essentially a Git repository that can be stored and accessed locally rather than using Dockers default which is a cloud based storage system. As the workstations in the computer labs do not have internet access we will be using Gitbucket instead. This means it is important for you to know how to retrieve and store data to the server that has it installed.
+
+You will have access to your own username//password for Gitbucket which you can use to save your work for the Acme scenario labs.
+
+*Use*:
+
+Access - Type *localhost:8080/gitbucket/* into your browser to access the Gitbucket repository.
+
+Next enter your username and password to gain access.
+
+Download - In a terminal type *git clone <HTTP clone url>* to clone it into the current file directory. The HTTP clone URL is located on the right hand side once you’ve logged into Gitbucket.
+
+Upload - Uploads happen in multiple steps:
+
+1.  Add to staging - *git add **
+2.  Commit - *git commit -m “<random message>”* #Random message can be anything you like.
+3.  Push to repository -
+a.  *git remote* #displays the remote location.
+b.  *git branch* #displays the branch.
+c.  *git push <remote> <master>* #using the outcome from the two commands above.
+d.  Type your username and password to authenticate changes.
+
+Testing - in the terminal type “*git status”* for simple information such as unsaved changed
+
+*Further reading*:
+
+Beginner video tutorial (users) - https://www.youtube.com/watch?v=gFC1peJ9ztA[https://www.youtube.com/watch?v=gFC1peJ9ztA]
+
+Written tutorial (more detailed) - https://www.atlassian.com/git/tutorials/learn-git-with-bitbucket-cloud
