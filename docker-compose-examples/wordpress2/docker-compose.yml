@@ -15,8 +15,9 @@ services:
       - '443:443'
     volumes:
       - 'wordpress_data:/bitnami'
-      - ./conf/httpd.conf:/opt/bitnami/apache/conf/httpd.conf
-      - ./conf/httpd-info.conf:/opt/bitnami/apache/conf/extra/httpd-info.conf
+      # - ./conf/httpd.conf:/opt/bitnami/apache/conf/httpd.conf
+      # - ./conf/httpd-info.conf:/opt/bitnami/apache/conf/extra/httpd-info.conf
+      - ./conf/00_status-vhost.conf:/opt/bitnami/apache/conf/vhosts/00_status-vhost.conf
     depends_on:
       - mariadb
     environment:
