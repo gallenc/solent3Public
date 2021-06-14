@@ -13,7 +13,7 @@
 | Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
 | 1  | ```sudo yum install -y yum-utils```  | Install Yum Utils (Required by Docker) |
-| 2*  | ```sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo```  | Add copy of Docker repo to Yum Config |
+| 2  | ```sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo```  | Add copy of Docker repo to Yum Config |
 | 3  | ```sudo yum install docker-ce docker-ce-cli containerd.io``` | Use YUM to install Docker (Docker is subsequently downloaded automatically) |
 | 4  | ```sudo systemctl start docker``` | Start the docker engine. *This must be done after every system boot-up!* |
 | 5 | ```sudo sysctl -w vm.max_map_count=262144``` | Increase the maximum memory for virtual machines on linux (to at least 4 GiB) as ELK Stack requires minimum 4GiB. *This must be done after every system boot-up!* | 
