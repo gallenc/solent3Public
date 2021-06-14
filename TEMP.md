@@ -2,7 +2,7 @@
 | Application | PC Desktop | VM Image | Docker Compose/ Docker desktop | Kubernetes | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Monitoring Applications |
-| OpenNMS |
+| [OpenNMS](../solent3Public/monitoring-applications/opennms/) |
 | | | | | | see [https://github.com/opennms-forge/stack-play](https://github.com/opennms-forge/stack-play) minimal horizon |
 | elk stack |
 | | | | | |try [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
