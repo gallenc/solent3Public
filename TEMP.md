@@ -8,7 +8,7 @@
 | | | | | |try [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
 | [Zenoss](../master/monitoring-applications/zenoss/) |
 | | | | | |[https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server](https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server) <BR> [http://wiki.zenoss.org/Install\_Zenoss](http://wiki.zenoss.org/Install_Zenoss) |
-| [Promethious] (../master/monitoring-applications/promethius/) |
+| [Promethius](../master/monitoring-applications/promethius/) |
 | | | | | |[https://prometheus.io/](https://prometheus.io/)[https://github.com/vegasbrianc/prometheus](https://github.com/vegasbrianc/prometheus) Docker compose examples https://docs.docker.com/config/daemon/prometheus/ Collect Docker metrics with Prometheus |
 | [Zabbix](../master/monitoring-applications/zabbix/) |
 | | | | | |[https://www.zabbix.com/download](https://www.zabbix.com/download)[https://www.zabbix.com/documentation/current/manual/installation/containers#docker\_file\_sources](https://www.zabbix.com/documentation/current/manual/installation/containers#docker_file_sources) |
