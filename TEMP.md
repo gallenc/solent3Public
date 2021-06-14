@@ -14,7 +14,7 @@
 | | | | | |[https://www.zabbix.com/download](https://www.zabbix.com/download)[https://www.zabbix.com/documentation/current/manual/installation/containers#docker\_file\_sources](https://www.zabbix.com/documentation/current/manual/installation/containers#docker_file_sources) |
 | [Cacti](../master/monitoring-applications/cacti/) |
 | | | | | |[https://www.cacti.net/](https://www.cacti.net/)https://github.com/pozgo/docker-cacti/blob/master/docker-compose.yaml |
-| [Nagios]((../master/monitoring-applications/Nagios/) |
+| [Nagios](../master/monitoring-applications/Nagios/) |
 | | | | | |[https://www.nagios.org/](https://www.nagios.org/)[https://github.com/JasonRivers/Docker-Nagios/blob/master/docker-compose.yml](https://github.com/JasonRivers/Docker-Nagios/blob/master/docker-compose.yml) |
 | Help Desk Applications |
 | [RT](../master/helpdesk-applications/RT/) |
