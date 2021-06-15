@@ -31,7 +31,7 @@
 
 **3. Download and Extract Docker-Compose Repo**
 
-Head to *[https://github.com/pozgo/docker-cacti](https://github.com/pozgo/docker-cacti)* and download the whole repo. Extract it to the directory you wish to run Jira in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete. You will find that the database will start, but Cacti will fail. Terminate the process with `Ctrl+C`, and once it's ended, simply run it again and it will work.
+Head to *[https://github.com/pozgo/docker-cacti](https://github.com/pozgo/docker-cacti)* and download the whole repo. Extract it to the directory you wish to run Cacti in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete. You will find that the database will start, but Cacti will fail. Terminate the process with `Ctrl+C`, and once it's ended, simply run it again and it will work.
  
  | Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
