@@ -29,9 +29,9 @@
 \*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
 
 
-**3. Download and Extract Docker-Compose Repo**
+**3. Download Docker-Compose File**
 
-Head to *[https://github.com/pozgo/docker-cacti](https://github.com/pozgo/docker-cacti)* and download the whole repo. Extract it to the directory you wish to run Cacti in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete. You will find that the database will start, but Cacti will fail. Terminate the process with `Ctrl+C`, and once it's ended, simply run it again and it will work.
+Download the `docker-compose.yml` and place it into the directory you wish to run Cacti in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete. You will find that the database will start, but Cacti will fail*. Terminate the process with `Ctrl+C`, and once it's ended, simply run it again and it will work. *This is because Cacti initialises before the database has been created, and so fails the first time round!
  
  | Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
