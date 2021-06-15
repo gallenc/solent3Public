@@ -10,7 +10,7 @@ These examples are intended for use in teaching  Solent University Network Manag
 | [OpenNMS](../master/monitoring-applications/opennms/) | 
 | | | | | | see [https://github.com/opennms-forge/stack-play](https://github.com/opennms-forge/stack-play) minimal horizon |
 | [ELK-stack](../master/monitoring-applications/ELK-stack/) | 
-| | | | ELK Confirmed Working From GH Repo, Guide Written. | |try [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
+| | | | ELK Confirmed Working From GH Repo, Guide Written. | |~~try~~ use! [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
 | [Zenoss](../master/monitoring-applications/zenoss/) |
 | | | | | |[https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server](https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server) <BR> [http://wiki.zenoss.org/Install\_Zenoss](http://wiki.zenoss.org/Install_Zenoss) |
 | [Promethius](../master/monitoring-applications/promethius/) |
