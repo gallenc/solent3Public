@@ -10,7 +10,7 @@ These examples are intended for use in teaching  Solent University Network Manag
 | [OpenNMS](../master/monitoring-applications/opennms/) | 
 | | | | | | see [https://github.com/opennms-forge/stack-play](https://github.com/opennms-forge/stack-play) minimal horizon |
 | [ELK-stack](../master/monitoring-applications/ELK-stack/) | 
-| | | | | |try [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
+| | | | EK Confirmed Working, Guide Written. Logstash TBC | |try [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) |
 | [Zenoss](../master/monitoring-applications/zenoss/) |
 | | | | | |[https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server](https://www.digitalocean.com/community/tutorials/installing-and-configuring-zenoss-on-a-centos-virtual-private-server) <BR> [http://wiki.zenoss.org/Install\_Zenoss](http://wiki.zenoss.org/Install_Zenoss) |
 | [Promethius](../master/monitoring-applications/promethius/) |
@@ -25,4 +25,4 @@ These examples are intended for use in teaching  Solent University Network Manag
 | [RT](../master/helpdesk-applications/RT/) |
 | | | | | | |[https://bestpractical.com/request-tracker](https://bestpractical.com/request-tracker)[https://github.com/FireFart/rt-docker](https://github.com/FireFart/rt-docker) Docker example? |
 | [Jira / Atlassian help desk](../master/helpdesk-applications/Jira-Helpdesk/) |
-| | | | | | [https://github.com/UKHomeOffice/docker-atlassian-jira-service-desk](https://github.com/UKHomeOffice/docker-atlassian-jira-service-desk)[https://www.atlassian.com/software/jira/service-management/features/service-desk](https://www.atlassian.com/software/jira/service-management/features/service-desk) |
+| | | |  Confirmed Working, Guide Written. | | [https://github.com/teamatldocker/jira](https://github.com/teamatldocker/jira) [https://www.atlassian.com/software/jira/service-management/features/service-desk](https://www.atlassian.com/software/jira/service-management/features/service-desk) |
