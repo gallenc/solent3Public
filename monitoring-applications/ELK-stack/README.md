@@ -5,7 +5,7 @@
 
 ## Installation Guide
 
-**0. Install CentOS** and, if necessary, update the runc command (```sudo yum install runc --allowerasing```)**
+**0. Install CentOS** and, if necessary, update the runc command (```sudo yum install runc --allowerasing```)
 
 
 **1. Install Docker Engine**: 
