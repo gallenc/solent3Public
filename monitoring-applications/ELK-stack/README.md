@@ -156,8 +156,11 @@ The first command we ran when installing MetricBeat was ```sudo docker run --net
 | ```-E setup.kibana.host=kib01:5601``` | `-E` flags that we are about to specify the value of a variable, in this case `setup.kibana.host`. This value should be the name and port of the Kibana Container in `docker-compose.yml` (since we are running setup locally), which is `kib01:5601` in this case. |
 | `-E output.elasticsearch.hosts=["es01:9200"]` | Specify the host URLs of the Elasticsearch Hosts as specified in `docker-compose.yml`. In this case, they are `es01:9200`, `es02:9200` and `es03:9200`, however in this case we have chosen to only use one. *If we weren't running MetricBeat on the same machine as the server, these URLs would have to be replaced with the Server's IP everywhere it appears (in both the MetricBeat and ELK setups), to ensure data can reach it from other machines on the network.
 
-
-**6. Viewing Collected Data**
+**6. Installing Logstash**
+ 
+ -Future me please figure this out
+ 
+**7. Viewing Collected Data**
 
 You can view and mess around with data transferred by MetricBeat (or any other similar program) by heading to ```http://localhost:5601``` in your browser, and picking the Kibana Dashboard, then Discover. You can now search a long list of metrics, and hovering over one will give you the option to "Visualize" it, and it'll bc put on a graph!
 
