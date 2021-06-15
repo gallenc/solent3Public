@@ -132,26 +132,35 @@ networks:
   
   </details>
  
-**4. Installing Logstash**
+**4. Installing Logstash on the Server**
  
  -Future me please figure this out
-  
-**5. Viewing Collected Data**
-
-You can view and mess around with data transferred by MetricBeat (or any other similar program) by heading to ```http://localhost:5601``` in your browser, and picking the Kibana Dashboard, then Discover. You can now search a long list of metrics, and hovering over one will give you the option to "Visualize" it, and it'll bc put on a graph!
-
-From there, you can search other metrics, hover over them and click the plus symbol in the top right of the card to add them to your graph. You can also change chart types, and date ranges from the menu above the graph.
 
  </details>
  
  <details><summary>Downloading and Installing a complete pre-made ELK Stack setup</summary>
  
- ```
- Coming Soon
- ```
+
+ **3. Download the Pre-Made ELK Stack Repo**
+
+ Head to [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) and download the entire repo. Then, extract it into the directory you wish to run it in. Now, navigate to it in the linux terminal and run the command `sudo docker-compose up`.
+ 
+ **4. Setting the Kibana Dashboard username and Password**
+This default setup includes a password for the Kibana Dashboard! The default username is `elastic` and the password is `changeme`. These values can be changed in `[install directory]/kibana/config/kibana.yml`
+
+ 
  </details>
  
+  
+**5. Installing Logstash as a Client**
  
+ -Write Me
+  
+**6. Viewing Collected Data**
+
+You can view and mess around with data transferred by Logstash (or any other similar program, such as MetricBeat) by heading to ```http://localhost:5601``` in your browser, and picking the Kibana Dashboard, then Discover. You can now search a long list of metrics, and hovering over one will give you the option to "Visualize" it, and it'll bc put on a graph!
+
+From there, you can search other metrics, hover over them and click the plus symbol in the top right of the card to add them to your graph. You can also change chart types, and date ranges from the menu above the graph.
  
  
  <details><summary>Optional Extras</summary>
