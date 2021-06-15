@@ -28,9 +28,9 @@
 \*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
 
 
-**3. Download and Extract Docker-Compose Repo**
+**3. Download and Extract Docker-Compose File**
 
-Head to *https://github.com/teamatldocker/jira* and download the whole repo. Extract it to the directory you wish to run Jira in, and navigate to this location in the linux terminal. Then run the application in Docker using the command below; this will run a standard Jira setup.
+Download `docker-compose.yml` and place it into the directory you wish to run Jira in, and navigate to this location in the linux terminal. Then run the application in Docker using the command below; this will run a standard Jira setup.
  
  | Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
