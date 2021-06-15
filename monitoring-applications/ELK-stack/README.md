@@ -31,6 +31,7 @@
 
 \*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
 
+<details><summary>Installing ELK Item by Item yourself</summary>
 
 **3. Install and run ELK Stack**
  
@@ -41,7 +42,7 @@
 
 \*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
 
-<details><summary>Example Docker Compose File</summary>
+<details><summary>**Example Docker Compose File**</summary>
   
   ```
 version: '2.2'
@@ -162,6 +163,14 @@ You can view and mess around with data transferred by MetricBeat (or any other s
 
 From there, you can search other metrics, hover over them and click the plus symbol in the top right of the card to add them to your graph. You can also change chart types, and date ranges from the menu above the graph.
 
+ </details>
+ 
+ <details><summary>Downloading and Installing a complete pre-made ELK Stack setup</summary>
+ 
+ ```
+ Coming Soon
+ ```
+ </details>
 
 ## Demo Installation
 
