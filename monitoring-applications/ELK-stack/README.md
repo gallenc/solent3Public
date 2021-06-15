@@ -31,132 +31,20 @@
 
 \*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
 
-<details><summary>Installing ELK Item by Item yourself</summary>
-
 **3. Install and run ELK Stack**
  
- | Step #  | Command* | Description |
+
+Download the `docker-compose.yml` and place it into the directory you wish to run ELK in, and navigate to this location in the linux terminal. Run the application in Docker using the command below.
+ 
+| Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
-| 1  | n/a | Copy and paste the content of the dropdown named "Example Docker Compose File" below into an empty file, and save it with the name ```docker-compose.yml``` into the directory you want to run ELK Stack in. Navigate to the directory you want to install ELK Stack into. |
-| 2  | ```sudo docker-compose up```  | Run the project. Docker will automatically download and install any modules named in the Docker-Compose.yml file which aren't yet downloaded. In this case that'll probably be all of them. Don't worry though, it'll only download them the first time! |
-
-\*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
-
-<details><summary>**Example Docker Compose File**</summary>
+| 1  | ```sudo docker-compose up```  | Run the project. Docker will automatically download and install any modules named in the Docker-Compose.yml file which aren't yet downloaded. In this case that'll probably be all of them. Don't worry though, it'll only download them the first time! |
   
-  ```
-version: '2.2'
-services:
-  es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
-    container_name: es01
-    environment:
-      - node.name=es01
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - data01:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
-    networks:
-      - elastic
-
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
-    container_name: es02
-    environment:
-      - node.name=es02
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - data02:/usr/share/elasticsearch/data
-    networks:
-      - elastic
-
-  es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.1
-    container_name: es03
-    environment:
-      - node.name=es03
-      - cluster.name=es-docker-cluster
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - data03:/usr/share/elasticsearch/data
-    networks:
-      - elastic
-
-  kib01:
-    image: docker.elastic.co/kibana/kibana:7.13.1
-    container_name: kib01
-    ports:
-      - 5601:5601
-    environment:
-      ELASTICSEARCH_URL: http://es01:9200
-      ELASTICSEARCH_HOSTS: '["http://es01:9200","http://es02:9200","http://es03:9200"]'
-    networks:
-      - elastic
-
-volumes:
-  data01:
-    driver: local
-  data02:
-    driver: local
-  data03:
-    driver: local
-
-networks:
-  elastic:
-    driver: bridge
-  ```
-  
-  </details>
- 
-**4. Installing Logstash on the Server**
- 
- -Future me please figure this out
-
- </details>
- 
- <details><summary>Downloading and Installing a complete pre-made ELK Stack setup</summary>
- 
-
- **3. Download the Pre-Made ELK Stack Repo**
-
- Head to [https://github.com/deviantony/docker-elk](https://github.com/deviantony/docker-elk) and download the entire repo. Then, extract it into the directory you wish to run it in. Now, navigate to it in the linux terminal and run the command `sudo docker-compose up`.
- 
- **4. Setting the Kibana Dashboard username and Password**
-This default setup includes a password for the Kibana Dashboard! The default username is `elastic` and the password is `changeme`. These values can be changed in `[install directory]/kibana/config/kibana.yml`
-
- 
- </details>
- 
-  
-**5. Installing Logstash as a Client**
+**4. Installing Logstash as a Client**
  
  -Write Me
   
-**6. Viewing Collected Data**
+**5. Viewing Collected Data**
 
 You can view and mess around with data transferred by Logstash (or any other similar program, such as MetricBeat) by heading to ```http://localhost:5601``` in your browser, and picking the Kibana Dashboard, then Discover. You can now search a long list of metrics, and hovering over one will give you the option to "Visualize" it, and it'll bc put on a graph!
 
