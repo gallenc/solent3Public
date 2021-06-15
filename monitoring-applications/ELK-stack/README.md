@@ -131,36 +131,12 @@ networks:
   ```
   
   </details>
-  
-**4. Install and Run MetricBeat**
-
-In ths guide, I will be using MetricBeat to monitor system metrics, such as CPU%, MEM% and so on. The commands in step 2 is explained in much more depth in **5.** for better understanding.
-
- | Step #  | Command* | Description |
-| ------------- | ------------- | -------------|
-| 1  | ```docker pull docker.elastic.co/beats/metricbeat:7.13.1``` | Download MetricBeat (7.13.1) |
-| 2  | ```sudo docker run --network=elasticstack_networkName docker.elastic.co/beats/metricbeat:7.13.1 setup -E setup.kibana.host=kib01:5601 -E output.elasticsearch.hosts=["es01:9200"]```  | Run the initial setup. MetricBeat will pass to the server the names of all the indecies it tracks for the server to make a note of. This may take a moment. |
-| 3  | ```sudo docker run --network=elasticstack_elastic docker.elastic.co/beats/metricbeat:7.13.1 metricbeat -e -E output.elasticsearch.hosts=["es01:9200"]```  | Run MetricBeat for real! Now metricbeat will be sending information to your server! |
-
-\*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
-
-
-**5. MetricBeat Installation Commands Explained**
-
-The first command we ran when installing MetricBeat was ```sudo docker run --network=elasticstack_elastic docker.elastic.co/beats/metricbeat:7.13.1 setup -E setup.kibana.host=kib01:5601 -E output.elasticsearch.hosts=["es01:9200"]```.
-| Command | Explanation |
-| -------- | -------- |
-| ```sudo docker run```  | Run the Docker Engine as superuser |
-| ```--network=elasticstack_elastic``` | In order to communicate with the server, we need to specify the network name. For ELK, the network name is ``elasticstack_`` followed by the name specified in ```docker-compose.yml```. In this came, that name was "elastic", hence elasticstack_elastic |
-| ```docker.elastic.co/beats/metricbeat:7.13.1 setup``` | Run metricbeat in Setup Mode |
-| ```-E setup.kibana.host=kib01:5601``` | `-E` flags that we are about to specify the value of a variable, in this case `setup.kibana.host`. This value should be the name and port of the Kibana Container in `docker-compose.yml` (since we are running setup locally), which is `kib01:5601` in this case. |
-| `-E output.elasticsearch.hosts=["es01:9200"]` | Specify the host URLs of the Elasticsearch Hosts as specified in `docker-compose.yml`. In this case, they are `es01:9200`, `es02:9200` and `es03:9200`, however in this case we have chosen to only use one. *If we weren't running MetricBeat on the same machine as the server, these URLs would have to be replaced with the Server's IP everywhere it appears (in both the MetricBeat and ELK setups), to ensure data can reach it from other machines on the network.
-
-**6. Installing Logstash**
+ 
+**4. Installing Logstash**
  
  -Future me please figure this out
- 
-**7. Viewing Collected Data**
+  
+**5. Viewing Collected Data**
 
 You can view and mess around with data transferred by MetricBeat (or any other similar program) by heading to ```http://localhost:5601``` in your browser, and picking the Kibana Dashboard, then Discover. You can now search a long list of metrics, and hovering over one will give you the option to "Visualize" it, and it'll bc put on a graph!
 
@@ -174,6 +150,37 @@ From there, you can search other metrics, hover over them and click the plus sym
  Coming Soon
  ```
  </details>
+ 
+ 
+ 
+ 
+ <details><summary>Optional Extras</summary>
+ 
+ **1. Install and Run MetricBeat**
+
+In ths guide, I will be using MetricBeat to monitor system metrics, such as CPU%, MEM% and so on. The commands in step 2 is explained in much more depth in **5.** for better understanding.
+
+ | Step #  | Command* | Description |
+| ------------- | ------------- | -------------|
+| 1  | ```docker pull docker.elastic.co/beats/metricbeat:7.13.1``` | Download MetricBeat (7.13.1) |
+| 2  | ```sudo docker run --network=elasticstack_networkName docker.elastic.co/beats/metricbeat:7.13.1 setup -E setup.kibana.host=kib01:5601 -E output.elasticsearch.hosts=["es01:9200"]```  | Run the initial setup. MetricBeat will pass to the server the names of all the indecies it tracks for the server to make a note of. This may take a moment. |
+| 3  | ```sudo docker run --network=elasticstack_elastic docker.elastic.co/beats/metricbeat:7.13.1 metricbeat -e -E output.elasticsearch.hosts=["es01:9200"]```  | Run MetricBeat for real! Now metricbeat will be sending information to your server! |
+
+\*Please Note: The commands at each step are all just single commands, but some may end up being across multiple lines here on Github if they're quite long!
+
+
+**2. MetricBeat Installation Commands Explained**
+
+The first command we ran when installing MetricBeat was ```sudo docker run --network=elasticstack_elastic docker.elastic.co/beats/metricbeat:7.13.1 setup -E setup.kibana.host=kib01:5601 -E output.elasticsearch.hosts=["es01:9200"]```.
+| Command | Explanation |
+| -------- | -------- |
+| ```sudo docker run```  | Run the Docker Engine as superuser |
+| ```--network=elasticstack_elastic``` | In order to communicate with the server, we need to specify the network name. For ELK, the network name is ``elasticstack_`` followed by the name specified in ```docker-compose.yml```. In this came, that name was "elastic", hence elasticstack_elastic |
+| ```docker.elastic.co/beats/metricbeat:7.13.1 setup``` | Run metricbeat in Setup Mode |
+| ```-E setup.kibana.host=kib01:5601``` | `-E` flags that we are about to specify the value of a variable, in this case `setup.kibana.host`. This value should be the name and port of the Kibana Container in `docker-compose.yml` (since we are running setup locally), which is `kib01:5601` in this case. |
+| `-E output.elasticsearch.hosts=["es01:9200"]` | Specify the host URLs of the Elasticsearch Hosts as specified in `docker-compose.yml`. In this case, they are `es01:9200`, `es02:9200` and `es03:9200`, however in this case we have chosen to only use one. *If we weren't running MetricBeat on the same machine as the server, these URLs would have to be replaced with the Server's IP everywhere it appears (in both the MetricBeat and ELK setups), to ensure data can reach it from other machines on the network.
+ </details>
+ 
 
 ## Demo Installation
 
