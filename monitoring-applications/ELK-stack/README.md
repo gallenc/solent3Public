@@ -42,7 +42,44 @@ Download the `docker-compose.yml` and place it into the directory you wish to ru
   
 **4. Installing Logstash as a Client**
  
- -Write Me
+In order for any data options to appear in the Kibana dashboard, we need to actually send it some data. First, use the two commands below to download and install Elastic Filebeat (which Logstash is a part of)
+ 
+ `curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.13.1-x86_64.rpm
+sudo rpm -vi filebeat-7.13.1-x86_64.rpm`
+
+Next, modify the contents of `/etc/filebeat/filebeat.yml` such that:
+
+1. In the Filebeat Inputs Section:
+```filebeat.inputs:
+- type: log
+  enabled: true
+  
+  paths:
+    - /var/log/*.log
+    #Feel free to add any othe paths you wish to be monitored, for example: - /home/[your username]/Desktop/*.txt to monitor text files on your desktop
+
+```
+
+
+2. In the Kibana Section:
+```
+setup.kibana:
+  host: localhost:5601" #or whatever the host address is in your case, if different!
+```
+
+3. In the Elasticsearch Output Section:
+```
+output.elasticsearch:
+  hosts: ["localhost:9200"] #or whatever the host address is in your case, if different!
+  username: "elastic" #or whatever use you set in the docker-compose file, if different!
+  password: "changeme" #or whatever password you set in the docker-compose file, if different!
+```
+  
+Now you can enable the logstash module using `sudo filebeat modules enable logstash`. You can see the full list of modules available in `/etc/filebeat/modules.d/` should you wish to use others too.
+
+Next, if Logstash has *never* been used on *the server*, run the command `sudo filebeat setup` and wait for it to complete to register all the relevent datatypes with the server.
+
+Lastly, use the command `sudo service filebeat start` to start sending data!  
   
 **5. Viewing Collected Data**
 
