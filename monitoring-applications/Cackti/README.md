@@ -1,6 +1,6 @@
 # Cacti
 
-## Introduction --n.b. confirm can actually do stuff with it once set up
+## Introduction --n.b. confirm can actually do stuff/send data to it(?) once set up
 
 
 **0. Install CentOS** and, if necessary, update the runc command (```sudo yum install runc --allowerasing```)**
