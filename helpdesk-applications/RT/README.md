@@ -39,7 +39,7 @@ Next, you'll need to create a number of config files. For now, we'll just use th
 | 1  | ```mv RT_SiteConfig.pm.example RT_SiteConfig.pm```  | 
 | 2  | ```mv getmailrc.example getmail/getmailrc```  | 
 | 3  | ```mv msmtp.conf.example msmtp/msmtp.conf```  | 
-| 4  | ```mv contrab.example contrab```  | 
+| 4  | ```mv crontab.example crontab```  | 
 
 If you need to change the configuration of RT, you can do by altering those files.
 
