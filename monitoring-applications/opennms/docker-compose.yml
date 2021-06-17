@@ -1,0 +1,71 @@
+volumes:
+  data-psql:
+    driver: local
+  data-horizon:
+    driver: local
+  data-grafana:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:10
+    container_name: postgres
+    environment:
+      - TZ=Europe/Berlin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - data-psql:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  horizon:
+    image: opennms/horizon:28.0.0
+    container_name: horizon
+    environment:
+      - TZ=Europe/Berlin
+      - JAVA_OPTS=-XX:+UseParallelGC -XX:+PrintFlagsFinal -XX:+UnlockExperimentalVMOptions
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - OPENNMS_DBNAME=opennms
+      - OPENNMS_DBUSER=opennms
+      - OPENNMS_DBPASS=opennms
+    volumes:
+      - data-horizon:/opennms-data
+    command: ["-s"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+          test: ["CMD", "curl", "-f", "-I", "http://localhost:8980/opennms/login.jsp"]
+          interval: 1m
+          timeout: 5s
+          retries: 3
+    ports:
+      - "8980:8980"
+      - "61616:61616"
+      - "8101:8101"
+
+  grafana:
+    image: opennms/helm:latest
+    container_name: grafana
+    environment:
+      - TZ=Europe/Berlin
+      - GF_SERVER_ROOT_URL=http://localhost
+      - GF_SECURITY_ADMIN_PASSWORD=mypass
+    volumes:
+      - data-grafana:/var/lib/grafana
+    healthcheck:
+          test: ["CMD", "curl", "-f", "-I", "http://localhost:3000/login"]
+          interval: 1m
+          timeout: 5s
+          retries: 3
+    ports:
+      - "3000:3000"
