@@ -39,7 +39,7 @@ Download the `docker-compose.yml` and place it into the directory you wish to ru
 
 You've now got a working Nagios server-side setup. You can view data (from the host machine) in your browser at `http://localhost:8080`. The default username and password is `nagiosadmin` and `nagios` respectively. Navigate to "Services" from the left menu for easy access.
 
-Note that rather than constantly polling, Nagios runs scheduled pings/polls of data, so it can take a few minutes for your first data to appear. In the services menu, Nagios will display when the first check is due to commence, if it hasn't already happened.
+Note that rather than constantly polling, Nagios runs scheduled pings/polls of data, so it can take a few minutes for your first data to appear. You can see when the last checks were and when the next are due to commence in the Scheduling Queue (selected from the left-hand menu bar)
 
 ## Demo Installation
 
