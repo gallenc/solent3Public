@@ -1,4 +1,4 @@
-# RT Request Tracker (*Currently not working)
+# RT Request Tracker
 
 ## Introduction
 
