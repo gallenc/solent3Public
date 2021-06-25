@@ -37,7 +37,7 @@ Download the `zenoss-nginx.zip` and extract it into the directory you wish to ru
 | ------------- | ------------- | -------------|
 | 1  | ```sudo docker-compose up```  | Run the project. Docker will automatically download and install any modules named in the Docker-Compose.yml file which aren't yet downloaded. In this case that'll probably be all of them. Don't worry though, it'll only download them the first time! |
 
-Start up takes quite a while. You'll know Zenoss is ready when there is a long list of messages in the linux terminal from the Daemon starting processes; the last message (confirming Zenoss is ready) is `zenoss4-core | zenoss is still running!`
+Start up takes quite a while. You'll know Zenoss is ready when there is a long list of messages in the linux terminal from the Daemon starting processes; the last message (confirming Zenoss is ready) is `zenoss4-core | zenoss is still running!` Sometimes it can get stuck at `make zope instance`, however stopping and starting it again usually fixes this.
 
 Now you can head to `localhost` in your browser.
 
