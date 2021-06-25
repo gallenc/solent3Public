@@ -23,6 +23,6 @@ Use the command `sudo docker run --name rt -p 80:80 netsandbox/request-tracker:l
 
 In order to restart RT - after a reboot, for example - you can use the command `sudo docker restart rt`.
 
-RT can now be accessed in your browser at `localhost`
+RT can now be accessed in your browser at `localhost` with the default username and password `root` and `password`
 
 ## Demo Installation
