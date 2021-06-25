@@ -31,7 +31,7 @@
 
 **3. Download Template**
 
-Download the `zenoss-nginx.zip` and extract it into the directory you wish to run Zenoss in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete. You will find that the database will start, but Cacti will fail*. Terminate the process with `Ctrl+C`, and once it's ended, simply run it again and it will work. *This is because Cacti initialises before the database has been created, and so fails the first time round!
+Download the `zenoss-nginx.zip` and extract it into the directory you wish to run Zenoss in, and navigate to this location in the linux terminal. Run the application in Docker using the command below, and wait for the process to complete.
  
  | Step #  | Command* | Description |
 | ------------- | ------------- | -------------|
